@@ -20,6 +20,7 @@ env:
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  AKKA_REPO_TOKEN: ${{ secrets.AKKA_REPO_TOKEN }}
   JAVA_VERSION: '21'
   MAVEN_OPTS: -Xmx1024m
 
@@ -102,6 +103,7 @@ jobs:
             # Commit the version changes
             git add .
             git commit -m "chore: bump version to $NEW_VERSION" || echo "No version changes to commit"
+            git push
           fi
           
           # Create git tag
