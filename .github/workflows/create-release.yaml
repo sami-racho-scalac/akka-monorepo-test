@@ -39,6 +39,10 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ env.GH_TOKEN }}
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
       
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -120,9 +124,12 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     env:
       NEW_VERSION: ${{ needs.generate-tag.outputs.new-version }}
+      ENVIRONMENT: ${{ needs.generate-tag.outputs.environment }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ env.NEW_VERSION }}-${{ env.ENVIRONMENT }}
 
       - name: Set up JDK
         uses: actions/setup-java@v4
