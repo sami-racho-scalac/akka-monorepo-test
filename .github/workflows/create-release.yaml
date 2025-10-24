@@ -111,20 +111,19 @@ jobs:
             
             # Commit the version changes
             git add .
-            git commit -m "chore: bump version to $NEW_VERSION" || echo "No version changes to commit"
-            git push
+            git commit -m "chore: [skip ci] bump version to $NEW_VERSION" || echo "No version changes to commit"
           fi
           
           # Create git tag
           TAG="$NEW_VERSION-$ENVIRONMENT"
           if [ "$ENVIRONMENT" = "dev" ]; then
             git tag "$TAG"
+            git push origin HEAD "$TAG"
           else
             # For non-dev, point to the corresponding dev tag commit
             git tag "$TAG" "$NEW_VERSION-dev^{commit}"
+            git push origin "$TAG"
           fi
-          
-          git push origin "$TAG"
 
           echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
